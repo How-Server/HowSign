@@ -24,7 +24,7 @@ public class HowSign implements ModInitializer {
 		try {
 			connection = DriverManager.getConnection("jdbc:sqlite:howsign.db");
 			Statement statement = connection.createStatement();
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS sign_data (uuid TEXT PRIMARY KEY, last_sign_time INTEGER, sign_count INTEGER DEFAULT 0, player_id TEXT, remind_enabled INTEGER DEFAULT 1)");
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS sign_data (uuid TEXT PRIMARY KEY, last_sign_time INTEGER, sign_count INTEGER DEFAULT 0, player_id TEXT, remind_enabled INTEGER DEFAULT 1, last_sign_date TEXT DEFAULT '', daily_sign_count INTEGER DEFAULT 0)");
 			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
