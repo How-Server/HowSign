@@ -1,9 +1,8 @@
 {
 	"required": true,
-	"package": "com.example.mixin",
+	"package": "tw.iehow",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
