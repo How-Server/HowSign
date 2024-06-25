@@ -64,7 +64,7 @@ public class SignCommand {
                         }
 
                         if (source.getPlayer().experienceLevel < REQUIRED_EXPERIENCE_LEVEL) {
-                            source.sendMessage(Text.literal("❌ 你需要三等才能完成簽到").formatted(Formatting.RED));
+                            source.sendMessage(Text.literal("❌ 你需要 " + REQUIRED_EXPERIENCE_LEVEL + " 等才能完成簽到").formatted(Formatting.RED));
                             return 1;
                         }
 
@@ -131,16 +131,26 @@ public class SignCommand {
         String playerUUID = player.getUuid().toString();
         long currentTime = System.currentTimeMillis();
         try (Connection connection = HowSign.getConnection()) {
-            PreparedStatement selectStatement = connection.prepareStatement("SELECT last_sign_time, remind_enabled FROM sign_data WHERE uuid = ?");
+            PreparedStatement selectStatement = connection.prepareStatement("SELECT last_sign_time, remind_enabled, daily_sign_count FROM sign_data WHERE uuid = ?");
             selectStatement.setString(1, playerUUID);
             ResultSet resultSet = selectStatement.executeQuery();
             if (resultSet.next()) {
                 long lastSignTime = resultSet.getLong("last_sign_time");
+                int dailySignCount = resultSet.getInt("daily_sign_count");
                 long pastTime = currentTime - lastSignTime;
                 if (pastTime < SIGN_INTERVAL) {
                     long remainingTime = SIGN_INTERVAL - pastTime;
                     return remainingTime / 60000 + " 分鐘後可以 /sign 簽到獲得貨幣";
                 }
+
+                if (dailySignCount >= MAX_DAILY_SIGNS) {
+                    return "今天的簽到已達到上限 " + MAX_DAILY_SIGNS + " 次";
+                }
+
+                if (player.experienceLevel < REQUIRED_EXPERIENCE_LEVEL) {
+                    return "你需要 " + REQUIRED_EXPERIENCE_LEVEL + " 等才能完成簽到";
+                }
+
                 if (resultSet.getInt("remind_enabled") == 1) {
                     player.sendMessage(Text.literal("立即 /sign 完成簽到獲得貨幣").formatted(Formatting.GOLD), true);
                 }
