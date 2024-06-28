@@ -16,7 +16,7 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"tw.iehow.HowSign"
+          "tw.iehow.howsign.HowSign"
 		]
 	},
 	"mixins": [

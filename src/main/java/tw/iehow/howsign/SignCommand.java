@@ -1,4 +1,4 @@
-package tw.iehow;
+package tw.iehow.howsign;
 
 import com.gmail.sneakdevs.diamondeconomy.DiamondUtils;
 import com.gmail.sneakdevs.diamondeconomy.sql.DatabaseManager;
