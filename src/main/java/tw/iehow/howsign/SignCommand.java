@@ -131,7 +131,7 @@ public class SignCommand {
         String playerUUID = player.getUuid().toString();
         long currentTime = System.currentTimeMillis();
         try (Connection connection = HowSign.getConnection()) {
-            PreparedStatement selectStatement = connection.prepareStatement("SELECT last_sign_time, remind_enabled, daily_sign_count FROM sign_data WHERE uuid = ?");
+            PreparedStatement selectStatement = connection.prepareStatement("SELECT last_sign_time, remind_enabled, , last_sign_date, daily_sign_count FROM sign_data WHERE uuid = ?");
             selectStatement.setString(1, playerUUID);
             ResultSet resultSet = selectStatement.executeQuery();
             if (resultSet.next()) {
@@ -142,8 +142,7 @@ public class SignCommand {
                     long remainingTime = SIGN_INTERVAL - pastTime;
                     return remainingTime / 60000 + " 分鐘後可以 /sign 簽到獲得貨幣";
                 }
-
-                if (dailySignCount >= MAX_DAILY_SIGNS) {
+                if (dailySignCount >= MAX_DAILY_SIGNS && resultSet.getString("last_sign_date").equals(LocalDate.now().toString())) {
                     return "今天的簽到已達到上限 " + MAX_DAILY_SIGNS + " 次";
                 }
 
