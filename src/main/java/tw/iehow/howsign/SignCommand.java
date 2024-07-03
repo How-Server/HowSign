@@ -131,7 +131,7 @@ public class SignCommand {
         String playerUUID = player.getUuid().toString();
         long currentTime = System.currentTimeMillis();
         try (Connection connection = HowSign.getConnection()) {
-            PreparedStatement selectStatement = connection.prepareStatement("SELECT last_sign_time, remind_enabled, , last_sign_date, daily_sign_count FROM sign_data WHERE uuid = ?");
+            PreparedStatement selectStatement = connection.prepareStatement("SELECT last_sign_time, remind_enabled, last_sign_date, daily_sign_count FROM sign_data WHERE uuid = ?");
             selectStatement.setString(1, playerUUID);
             ResultSet resultSet = selectStatement.executeQuery();
             if (resultSet.next()) {
