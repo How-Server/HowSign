@@ -32,6 +32,7 @@ public class HowSign implements ModInitializer {
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			SignCommand.register(dispatcher);
+			VIPCommand.register(dispatcher);
 		});
 
 		Placeholders.register(Identifier.of("how", "sign"), (ctx, arg) -> {
