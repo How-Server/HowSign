@@ -3,7 +3,7 @@ plugins {
 	id 'maven-publish'
 }
 
-version = project.mod_version
+version = project.mod_version + "+" + project.minecraft_version
 group = project.maven_group
 
 base {
@@ -46,7 +46,7 @@ dependencies {
 	implementation 'org.xerial:sqlite-jdbc:3.41.2.2'
 	modImplementation "net.luckperms:api:5.4"
 	modImplementation files('depend/diamondeconomy-1.5.7+1.21.jar')
-	modImplementation files('depend/ItsOurs-1.5.0-mc-24w21b.jar')
+	modImplementation files('depend/ItsOurs-1.5.0+1.21.2-pre2.jar')
 }
 
 processResources {

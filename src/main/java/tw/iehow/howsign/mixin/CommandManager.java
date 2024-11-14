@@ -20,7 +20,11 @@ public abstract class CommandManager {
             try {
                 boolean expired = ((ServerPlayerEntity) source).getSession().isKeyExpired();
             }catch (Exception e){
-                source.sendMessage(Text.literal("您的驗證公鑰已過期，請重新登入（若您使用EasyMC，請購買正版帳號）").formatted(Formatting.YELLOW));
+                ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) source;
+                serverPlayerEntity.sendMessage(Text.literal("您的驗證公鑰已過期，請重新登入（依然出現本錯誤，請參考下方解決方式）").formatted(Formatting.YELLOW), false);
+                serverPlayerEntity.sendMessage(Text.literal("1. 若有安裝 No Chat Reports 模組，請將其移除").formatted(Formatting.WHITE), false);
+                serverPlayerEntity.sendMessage(Text.literal("2. 若使用 EasyMC 等非正規來源的帳號，請購買正版帳號").formatted(Formatting.WHITE), false);
+
                 ci.cancel();
             }
         }
