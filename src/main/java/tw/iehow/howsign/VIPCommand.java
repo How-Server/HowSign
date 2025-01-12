@@ -9,6 +9,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import me.drex.itsours.data.DataManager;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
+import net.luckperms.api.model.user.UserManager;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.types.InheritanceNode;
 import net.minecraft.command.argument.GameProfileArgumentType;
@@ -20,6 +21,7 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.Collection;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class VIPCommand {
@@ -84,16 +86,21 @@ public class VIPCommand {
         int newAmount = MathHelper.clamp(blocks + claimBlocks, 0, Integer.MAX_VALUE);
         DataManager.updateUserData(UUID.fromString(uuid)).setBlocks(newAmount);
 
-        User user = LuckPermsProvider.get().getUserManager().getUser(UUID.fromString(uuid));
-        long expiryDuration = 0;
-        for (Node node : user.getNodes()) {
-            if (node.getKey().equals("group."+vipType) && node.hasExpiry()) {
-                expiryDuration = node.getExpiryDuration().toMinutes();
-                user.data().remove(node);
+
+        UserManager userManager = LuckPermsProvider.get().getUserManager();
+        CompletableFuture<User> userFuture = userManager.loadUser(UUID.fromString(uuid));
+
+        userFuture.thenAcceptAsync(user -> {
+            long expiryDuration = 0;
+            for (Node node : user.getNodes()) {
+                if (node.getKey().equals("group."+vipType) && node.hasExpiry()) {
+                    expiryDuration = node.getExpiryDuration().toMinutes();
+                    user.data().remove(node);
+                }
             }
-        }
-        if (!vipType.equals("vip200")) user.data().add(InheritanceNode.builder("vipoutdated").build());
-        user.data().add(InheritanceNode.builder(vipType).expiry(43500 + expiryDuration, TimeUnit.MINUTES).build());
-        LuckPermsProvider.get().getUserManager().saveUser(user);
+            if (!vipType.equals("vip200")) user.data().add(InheritanceNode.builder("vipoutdated").build());
+            user.data().add(InheritanceNode.builder(vipType).expiry(43500 + expiryDuration, TimeUnit.MINUTES).build());
+            LuckPermsProvider.get().getUserManager().saveUser(user);
+        });
     }
 }
