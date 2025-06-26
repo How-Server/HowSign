@@ -3,7 +3,8 @@
   "package": "tw.iehow.howsign.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "CommandManager"
+    "CommandManager",
+    "JoinTeam"
   ],
   "injectors": {
     "defaultRequire": 1
