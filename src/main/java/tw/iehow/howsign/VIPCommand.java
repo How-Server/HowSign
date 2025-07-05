@@ -80,8 +80,8 @@ public class VIPCommand {
         DatabaseManager dm = DiamondUtils.getDatabaseManager();
         dm.changeBalance(uuid, totalMoney);
 
-        int blocks = DataManager.getUserData(UUID.fromString(uuid)).blocks();
-        int newAmount = MathHelper.clamp(blocks + totalClaimBlocks, 0, Integer.MAX_VALUE);
+        long blocks = DataManager.getUserData(UUID.fromString(uuid)).blocks();
+        long newAmount = MathHelper.clamp(blocks + totalClaimBlocks, 0, Integer.MAX_VALUE);
         DataManager.updateUserData(UUID.fromString(uuid)).setBlocks(newAmount);
 
         UserManager userManager = LuckPermsProvider.get().getUserManager();

@@ -46,7 +46,7 @@ dependencies {
 	implementation 'org.xerial:sqlite-jdbc:3.41.2.2'
 	modImplementation "net.luckperms:api:5.4"
 	modImplementation files('depend/diamondeconomy-1.5.7+1.21.jar')
-	modImplementation files('depend/ItsOurs-1.5.0+1.21.2-pre2.jar')
+	modImplementation files('depend/ItsOurs-1.5.1+1.21.6.jar')
 }
 
 processResources {
