@@ -2,6 +2,7 @@ package tw.iehow.howsign;
 
 import com.gmail.sneakdevs.diamondeconomy.DiamondUtils;
 import com.gmail.sneakdevs.diamondeconomy.sql.DatabaseManager;
+import com.gmail.sneakdevs.diamondeconomy.sql.TransactionType;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.CommandManager;
@@ -83,7 +84,7 @@ public class SignCommand {
                         updateStatement.executeUpdate();
 
                         DatabaseManager dm = DiamondUtils.getDatabaseManager();
-                        dm.changeBalance(String.valueOf(playerUUID), SIGN_REWARD);
+                        dm.changeBalance(String.valueOf(playerUUID), TransactionType.INCOME, SIGN_REWARD, "簽到獎勵");
                         source.sendMessage(Text.literal("✅ 簽到成功，已扣除三等經驗！" + SIGN_REWARD + " How已存入銀行").formatted(Formatting.GREEN));
                     } catch (SQLException e) {
                         source.sendMessage(Text.literal("❌ 簽到異常，請聯繫管理員").formatted(Formatting.RED));

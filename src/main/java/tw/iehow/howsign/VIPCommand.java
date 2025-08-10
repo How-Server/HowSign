@@ -2,6 +2,7 @@ package tw.iehow.howsign;
 
 import com.gmail.sneakdevs.diamondeconomy.DiamondUtils;
 import com.gmail.sneakdevs.diamondeconomy.sql.DatabaseManager;
+import com.gmail.sneakdevs.diamondeconomy.sql.TransactionType;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -78,7 +79,7 @@ public class VIPCommand {
 
     private static void apply(String uuid, String vipType, int amount, int totalMoney, int totalClaimBlocks) {
         DatabaseManager dm = DiamondUtils.getDatabaseManager();
-        dm.changeBalance(uuid, totalMoney);
+        dm.changeBalance(uuid, TransactionType.INCOME, totalMoney, "會員 " + vipType + " " + amount + " 期");
 
         long blocks = DataManager.getUserData(UUID.fromString(uuid)).blocks();
         long newAmount = MathHelper.clamp(blocks + totalClaimBlocks, 0, Integer.MAX_VALUE);
